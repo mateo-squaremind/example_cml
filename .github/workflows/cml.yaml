@@ -15,7 +15,6 @@ jobs:
           cml runner \
               --cloud=gcp \
               --cloud-region=us-west \
-              --token=${{ secrets.GCP_SECRET }} \
               --cloud-type=m+t4 \
               --labels=cml-gpu
   train-model:
