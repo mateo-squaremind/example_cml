@@ -11,6 +11,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
         run: |
           echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}' > gce-credentials.json
+          cat gce-credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS='gce-credentials.json'        
           cml runner \
               --cloud=gcp \
