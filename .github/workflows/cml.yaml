@@ -9,11 +9,12 @@ jobs:
       - name: Deploy runner on EC2
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          #GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
+          GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
         run: |
           cml runner \
               --cloud=gcp \
               --cloud-region=us-west \
+              --token=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }} \
               --cloud-type=m+t4 \
               --labels=cml-gpu
   train-model:
