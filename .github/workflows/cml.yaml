@@ -18,7 +18,6 @@ jobs:
               --cloud=gcp \
               --cloud-region=us-west \
               --cloud-type=m \
-              --cloud-permission-set= pixelmind \
               --labels=cml-gpu
   train-model:
     needs: deploy-runner
