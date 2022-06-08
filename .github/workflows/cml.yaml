@@ -18,7 +18,7 @@ jobs:
               --cloud=gcp \
               --cloud-region=us-east \
               --cloud-type=n1-standard-8\
-              --cloud-gpu=t4
+              --cloud-gpu=tesla
               --labels=cml-gpu
   train-model:
     needs: deploy-runner
