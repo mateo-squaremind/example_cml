@@ -16,7 +16,7 @@ jobs:
           cml runner \
               --cloud=gcp \
               --cloud-region=us-east \
-              --cloud-type=n1-standard-8\
+              --cloud-type="n1-standard-8+nvidia-tesla-t4*1" \
               --cloud-gpu=v100 \
               --labels=cml-gpu 
   train-model:
