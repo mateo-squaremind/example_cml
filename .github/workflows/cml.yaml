@@ -17,7 +17,7 @@ jobs:
           cml runner \
               --cloud=gcp \
               --cloud-region=us-west \
-              --cloud-type=m+t4 \
+              --cloud-type=m \
               --cloud-permission-set= \
               --labels=cml-gpu
   train-model:
