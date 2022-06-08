@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: iterative/setup-cml@v1
       - uses: actions/checkout@v2
-      - name: Deploy runner on EC2
+      - name: Deploy runner on GCP
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
@@ -16,8 +16,9 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS='gce-credentials.json'        
           cml runner \
               --cloud=gcp \
-              --cloud-region=us-west \
-              --cloud-type=m \
+              --cloud-region=us-east \
+              --cloud-type=n1-standard-8\
+              --cloud-gpu=t4
               --labels=cml-gpu
   train-model:
     needs: deploy-runner
