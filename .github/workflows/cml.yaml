@@ -18,8 +18,8 @@ jobs:
               --cloud=gcp \
               --cloud-region=us-east \
               --cloud-type=n1-standard-8\
-              --cloud-gpu=tesla
-              --labels=cml-gpu
+              --cloud-gpu=v100 \
+              --labels=cml-gpu 
   train-model:
     needs: deploy-runner
     runs-on: [self-hosted, cml-gpu]
