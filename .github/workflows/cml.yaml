@@ -48,9 +48,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Train model
         env:
-          REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
         run: |
-          sudo usermod -a -G docker ${USER}
+          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}' > gce-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS='gce-credentials.json'
+          echo Y | gcloud auth configure-docker
+          sudo chmod 666 /var/run/docker.sock
 
           gcloud auth configure-docker
           docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
