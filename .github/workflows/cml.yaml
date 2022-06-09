@@ -3,18 +3,19 @@ on: [push]
 jobs:
   job_id:
     runs-on: ubuntu-latest
-      steps:
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v0'
-        with:
-          credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}'
+    steps:
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}'
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v0'
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
 
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
   deploy-runner:
+    needs: job_id
     runs-on: ubuntu-latest
     steps:
       - uses: iterative/setup-cml@v1
