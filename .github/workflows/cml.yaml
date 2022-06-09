@@ -77,4 +77,4 @@ jobs:
                   && git checkout -b run.scan_20220504.tanguy_back_3-480153d8.9f347442 \
                   && git add --all \
                   && git commit -m \"upload job result\" \
-                  && git push --set-upstream origin run.scan_20220504.tanguy_back_3-480153d8.9f347442
+                  && git push --set-upstream origin run.scan_20220504.tanguy_back_3-480153d8.9f347442"
