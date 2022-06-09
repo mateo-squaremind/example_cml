@@ -53,6 +53,9 @@ jobs:
         run: |
           echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}' > gce-credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS='gce-credentials.json'
+
+          gcloud auth activate-service-account pixelmind@dpt-stitching-pixelmind-dev.iam.gserviceaccount.com --key-file=gce-credentials.json
+
           echo Y | gcloud auth configure-docker
           sudo chmod 666 /var/run/docker.sock
 
