@@ -18,6 +18,7 @@ jobs:
     - name: 'test gcloud'
       run: |
         gcloud auth configure-docker
+        docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
 
   deploy-runner:
     needs: job_id
