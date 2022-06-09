@@ -38,6 +38,7 @@ jobs:
               --cloud-region=us-east \
               --cloud-type=n1-standard-8+nvidia-tesla-t4*1 \
               --labels=cml-gpu \
+              --cloud-hdd-size=500 \
               --idle-timeout=900  
   train-model:
     needs: deploy-runner
@@ -49,6 +50,8 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
         run: |
+          sudo usermod -a -G docker ${USER}
+
           gcloud auth configure-docker
           docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
 
