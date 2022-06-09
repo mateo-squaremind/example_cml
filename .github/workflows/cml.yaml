@@ -39,7 +39,7 @@ jobs:
               --cloud-type=n1-standard-8+nvidia-tesla-t4*1 \
               --labels=cml-gpu \
               --cloud-hdd-size=500 \
-              --idle-timeout=900  
+              --idle-timeout=9000  
   train-model:
     needs: deploy-runner
     runs-on: [self-hosted, cml-gpu]
@@ -64,6 +64,7 @@ jobs:
           docker run \
             --gpus all \
             --shm-size 30g \
+            --detach \
             --volume /home/ubuntu/dvc-cache:/root/pixelmind/.dvc/cache \
             --workdir /root/pixelmind \
             -it gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442 \
