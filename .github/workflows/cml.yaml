@@ -62,19 +62,18 @@ jobs:
           docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
 
           docker run \
-          --gpus all \
-          --shm-size 30g \
-          --detach \
-          --volume /home/ubuntu/dvc-cache:/root/pixelmind/.dvc/cache \
-          --workdir /root/pixelmind \
-          -it gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442 \
-          /bin/bash -c " \
-                  export GOOGLE_APPLICATION_CREDENTIALS=/root/.gcp/gcp.json \
-                  && dvc pull --force --recursive; \
-                  cd . \
-                  && pixelops dvc repro '**/dvc.yaml:aif_composite'; \
-                  dvc push \
-                  && git checkout -b run.scan_20220504.tanguy_back_3-480153d8.9f347442 \
-                  && git add --all \
-                  && git commit -m \"upload job result\" \
-                  && git push --set-upstream origin run.scan_20220504.tanguy_back_3-480153d8.9f347442"
+            --gpus all \
+            --shm-size 30g \
+            --volume /home/ubuntu/dvc-cache:/root/pixelmind/.dvc/cache \
+            --workdir /root/pixelmind \
+            -it gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442 \
+            /bin/bash -c " \
+                    export GOOGLE_APPLICATION_CREDENTIALS=/root/.gcp/gcp.json \
+                    && dvc pull --force --recursive; \
+                    cd . \
+                    && pixelops dvc repro '**/dvc.yaml:aif_composite'; \
+                    dvc push \
+                    && git checkout -b run.scan_20220504.tanguy_back_3-480153d8.9f347442 \
+                    && git add --all \
+                    && git commit -m \"upload job result\" \
+                    && git push --set-upstream origin run.scan_20220504.tanguy_back_3-480153d8.9f347442"
