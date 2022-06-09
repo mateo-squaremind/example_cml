@@ -28,7 +28,6 @@ jobs:
       - name: Deploy runner on GCP
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          
           GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
         run: |
           echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}' > gce-credentials.json
@@ -44,17 +43,14 @@ jobs:
     needs: deploy-runner
     runs-on: [self-hosted, cml-gpu]
     timeout-minutes: 4320 # 72h
-    container:
-      image: 712523728464.dkr.ecr.us-east-2.amazonaws.com/pixelmind:feature.switch_to_gcp.381eb910
-      options: --gpus all
     steps:
       - uses: actions/checkout@v2
       - name: Train model
         env:
           REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
+          gcloud auth configure-docker
+          docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
 
           pip install -r requirements.txt
           python train.py
