@@ -38,7 +38,8 @@ jobs:
               --cloud-region=us-east \
               --cloud-type=n1-standard-8+nvidia-tesla-t4*1 \
               --labels=cml-gpu \
-              --idle-timeout=-1 
+              --cloud-startup-script="gcloud auth configure-docker" \
+              --idle-timeout=900  
   train-model:
     needs: deploy-runner
     runs-on: [self-hosted, cml-gpu]
@@ -52,6 +53,8 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
         run: |
+          gcloud auth configure-docker
+
           pip install -r requirements.txt
           python train.py
 
