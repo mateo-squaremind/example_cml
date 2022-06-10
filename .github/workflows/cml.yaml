@@ -59,7 +59,9 @@ jobs:
           echo Y | gcloud auth configure-docker
           sudo chmod 666 /var/run/docker.sock
 
-          git clone https://'${{ secrets.REPO_TOKEN }}'@github.com:SquareMind-dev/pixelmind.git
+          echo '${secrets.REPO_TOKEN}''
+
+          git clone https://'${secrets.REPO_TOKEN}'@github.com:SquareMind-dev/pixelmind.git
 
           #git clone git@github.com:SquareMind-dev/pixelmind.git
 
