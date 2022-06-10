@@ -62,9 +62,21 @@ jobs:
 
           git clone https://'${{ secrets.PERSONAL_ACCESS_TOKEN }}'@github.com/SquareMind-dev/pixelmind.git
 
-          docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
+          cd pixelmind/src/pixelops
 
-          docker run -it --detach --gpus all gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
+          apt install -y python3.8-dev python3-pip 
+          python3.8 -m pip install --upgrade pip 
+          python3 -m pip install --no-cache-dir  ".[all]" 
+          python3 -m pip install --no-cache-dir  . 
+
+          cd ../..
+
+          pixelops docker build 
+
+
+# docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
+
+#docker run -it --detach --gpus all gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
 
    
 
