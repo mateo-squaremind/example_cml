@@ -57,9 +57,13 @@ jobs:
           gcloud auth activate-service-account pixelmind@dpt-stitching-pixelmind-dev.iam.gserviceaccount.com --key-file=gce-credentials.json
 
           echo Y | gcloud auth configure-docker
-          sudo chmod 666 /var/run/docker.sock
+          sudo chmod 666 /var/run/docker.s--detach 
 
           git clone https://'${{ secrets.PERSONAL_ACCESS_TOKEN }}'@github.com/SquareMind-dev/pixelmind.git
+
+          docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
+
+          docker run -it --detach --gpus all gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
 
    
 
