@@ -59,45 +59,32 @@ jobs:
           echo Y | gcloud auth configure-docker
           sudo chmod 666 /var/run/docker.sock
 
-          echo '${secrets.REPO_TOKEN}''
+          git clone https://oauth2:'${REPO_TOKEN}'@github.com/SquareMind-dev/pixelmind.git
 
-          git clone https://'${secrets.REPO_TOKEN}'@github.com:SquareMind-dev/pixelmind.git
+   
 
-          #git clone git@github.com:SquareMind-dev/pixelmind.git
-
-          docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
-          
-
-          distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-            && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
-            && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-
-          sudo apt-get update
-          sudo apt-get install nvidia-docker2=2.8.0-1 --allow-downgrades
-
-
-  run-scan:
-    needs: pull-docker
-    runs-on: [self-hosted, cml-gpu]
-    timeout-minutes: 4320 # 72h
-    container:
-      image: gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
-      options: --gpus all
-    steps:
-      - uses: actions/checkout@v2
-      - name: Train model
-        env:
-          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
-        run: |
-          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}' > gce-credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS='gce-credentials.json'
+  # run-scan:
+  #   needs: pull-docker
+  #   runs-on: [self-hosted, cml-gpu]
+  #   timeout-minutes: 4320 # 72h
+  #   container:
+  #     image: gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
+  #     options: --gpus all
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Train model
+  #       env:
+  #         REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+  #         GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
+  #       run: |
+  #         echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}' > gce-credentials.json
+  #         export GOOGLE_APPLICATION_CREDENTIALS='gce-credentials.json'
              
-          dvc pull --force --recursive; \
-          pixelops dvc repro '**/dvc.yaml:aif_composite'; \
-          dvc push \
-          git checkout -b run.scan_20220504.tanguy_back_3-480153d8.9f347442 \
-          git add --all \
-          git commit -m \"upload job result\" \
-          git push --set-upstream origin run.scan_20220504.tanguy_back_3-480153d8.9f347442"
+  #         dvc pull --force --recursive; \
+  #         pixelops dvc repro '**/dvc.yaml:aif_composite'; \
+  #         dvc push \
+  #         git checkout -b run.scan_20220504.tanguy_back_3-480153d8.9f347442 \
+  #         git add --all \
+  #         git commit -m \"upload job result\" \
+  #         git push --set-upstream origin run.scan_20220504.tanguy_back_3-480153d8.9f347442"
 
