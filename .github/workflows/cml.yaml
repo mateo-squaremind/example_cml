@@ -58,6 +58,7 @@ jobs:
 
           echo Y | gcloud auth configure-docker
           sudo chmod 666 /var/run/docker.s--detach 
+          sudo chmod 777 /var/run/docker.sock
 
           git clone https://'${{ secrets.PERSONAL_ACCESS_TOKEN }}'@github.com/SquareMind-dev/pixelmind.git
 
