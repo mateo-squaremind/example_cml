@@ -59,7 +59,9 @@ jobs:
           echo Y | gcloud auth configure-docker
           sudo chmod 666 /var/run/docker.sock
 
-          git clone git@github.com:SquareMind-dev/pixelmind.git
+          git clone https://'${{ secrets.REPO_TOKEN }}'@github.com:SquareMind-dev/pixelmind.git
+
+          #git clone git@github.com:SquareMind-dev/pixelmind.git
 
           docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
           
