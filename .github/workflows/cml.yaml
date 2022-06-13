@@ -31,36 +31,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
         run: |
           echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}' > gce-credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS='gce-credentials.json'        
-          cml runner \
-              --name=$(git rev-parse --abbrev-ref HEAD | sed 's/_/-/g')-$(git rev-parse --short HEAD) \
-              --cloud=gcp \
-              --cloud-region=us-east \
-              --cloud-type=n1-standard-8+nvidia-tesla-t4*1 \
-              --labels=cml-gpu \
-              --cloud-hdd-size=500 \
-              --idle-timeout=9000  
-  pull-docker:
-    needs: deploy-runner
-    runs-on: [self-hosted, cml-gpu]
-    timeout-minutes: 4320 # 72h
-    steps:
-      - uses: actions/checkout@v2
-      - name: Train model
-        env:
-          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
-        run: |
-          echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}' > gce-credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS='gce-credentials.json'
-
-          gcloud auth activate-service-account pixelmind@dpt-stitching-pixelmind-dev.iam.gserviceaccount.com --key-file=gce-credentials.json
-
-          echo Y | gcloud auth configure-docker
-           
-          sudo chmod 777 /var/run/docker.sock
-
-          git clone https://'${{ secrets.PERSONAL_ACCESS_TOKEN }}'@github.com/SquareMind-dev/pixelmind.git
+          export GOOGLE_APPLICATION_CREDENTIALS='gce-credentials.json'     
 
           cd pixelmind/src/pixelops
 
@@ -71,7 +42,51 @@ jobs:
 
           cd ../..
 
-          pixelops docker build 
+          pixelops docker build
+
+
+
+
+# cml runner \
+#     --name=$(git rev-parse --abbrev-ref HEAD | sed 's/_/-/g')-$(git rev-parse --short HEAD) \
+#     --cloud=gcp \
+#     --cloud-region=us-east \
+#     --cloud-type=n1-standard-8+nvidia-tesla-t4*1 \
+#     --labels=cml-gpu \
+#     --cloud-hdd-size=500 \
+#     --idle-timeout=9000  
+  # pull-docker:
+  #   needs: deploy-runner
+  #   runs-on: [self-hosted, cml-gpu]
+  #   timeout-minutes: 4320 # 72h
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Train model
+  #       env:
+  #         REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+  #         GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}
+  #       run: |
+  #         echo '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_DATA }}' > gce-credentials.json
+  #         export GOOGLE_APPLICATION_CREDENTIALS='gce-credentials.json'
+
+  #         gcloud auth activate-service-account pixelmind@dpt-stitching-pixelmind-dev.iam.gserviceaccount.com --key-file=gce-credentials.json
+
+  #         echo Y | gcloud auth configure-docker
+           
+  #         sudo chmod 777 /var/run/docker.sock
+
+  #         git clone https://'${{ secrets.PERSONAL_ACCESS_TOKEN }}'@github.com/SquareMind-dev/pixelmind.git
+
+  #         cd pixelmind/src/pixelops
+
+  #         apt install -y python3.8-dev python3-pip 
+  #         python3.8 -m pip install --upgrade pip 
+  #         python3 -m pip install --no-cache-dir  ".[all]" 
+  #         python3 -m pip install --no-cache-dir  . 
+
+  #         cd ../..
+
+  #         pixelops docker build
 
 
 # docker pull gcr.io/dpt-stitching-pixelmind-dev/pixelmind:run.scan_20220504.tanguy_back_3-480153d8.9f347442
